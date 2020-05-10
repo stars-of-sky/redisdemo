@@ -4,7 +4,7 @@ import cn.hutool.http.HttpStatus;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.system.SystemUtil;
 import com.rp.redisdemo.entity.User;
-import com.rp.redisdemo.service.UserService;
+import com.rp.redisdemo.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,16 +25,17 @@ import java.util.Map;
 public class RedisdemoApplicationTests {
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     @Test
     public void contextLoads() {
-        List<User> us = userService.getAll();
+        List<User> us = userServiceImpl.getAll();
         System.out.println(us);
         User user = new User();
         user.setName("a2a");
-        user.setId(1l);
-        userService.updateUserById(user);
+        user.setId(1L);
+        user.setTel("18888888889");
+        userServiceImpl.updateUserById(user);
 //        System.out.println(uu);
     }
 
@@ -59,16 +60,23 @@ public class RedisdemoApplicationTests {
         //Map转为URL参数字符串
         //url = url + HttpUtil.toParams(param);
         //或者
-        HttpUtil.urlWithForm(url, param, Charset.forName("utf-8"), true);
+        url = HttpUtil.urlWithForm(url, param, Charset.forName("utf-8"), true);
         param.clear();
-        //将URL参数字符串转为Map对象
+        //----将URL参数字符串转为Map对象----
         HttpUtil.decodeParams(pageUrl, "UFT-8");
         param = Collections.unmodifiableMap(HttpUtil.decodeParamMap(pageUrl, "UFT-8"));
+        // -------------------------------
         int status = HttpStatus.HTTP_NOT_FOUND;
         try {
             String context = HttpUtil.get(pageUrl);
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    @Test
+    public void test1() {
+        User user = User.builder().age(12).name("语沫").tel("153535353535").build();
+        userServiceImpl.addUser(user);
     }
 }

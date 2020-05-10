@@ -2,29 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rp.redisdemo.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="com.rp.redisdemo.model.User">
-        <id column="id" jdbcType="BIGINT" property="id" />
-        <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="age" jdbcType="VARCHAR" property="age" />
-        <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <resultMap id="BaseResultMap" type="com.rp.redisdemo.entity.User">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, age, tel
+            id,
+            name,
+            age,
+            tel
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from xxx_user
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from xxx_user
+        delete
+        from xxx_user
         where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="com.rp.redisdemo.model.User">
-        insert into xxx_user (id, name, age,
-        tel)
-        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR},
+    <insert id="insert" parameterType="com.rp.redisdemo.entity.User" keyColumn="id" useGeneratedKeys="true">
+        insert into xxx_user (id, name, age, tel)
+        values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
         #{tel,jdbcType=VARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.rp.redisdemo.model.User">
@@ -51,21 +54,21 @@
                 #{name,jdbcType=VARCHAR},
             </if>
             <if test="age != null">
-                #{age,jdbcType=VARCHAR},
+                #{age,jdbcType=INTEGER},
             </if>
             <if test="tel != null">
                 #{tel,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.rp.redisdemo.model.User">
+    <update id="updateByPrimaryKeySelective" parameterType="com.rp.redisdemo.entity.User">
         update xxx_user
         <set>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="age != null">
-                age = #{age,jdbcType=VARCHAR},
+                age = #{age,jdbcType=INTEGER},
             </if>
             <if test="tel != null">
                 tel = #{tel,jdbcType=VARCHAR},
@@ -73,7 +76,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.rp.redisdemo.model.User">
+    <update id="updateByPrimaryKey" parameterType="com.rp.redisdemo.entity.User">
         update xxx_user
         set name = #{name,jdbcType=VARCHAR},
         age = #{age,jdbcType=VARCHAR},
@@ -83,29 +86,35 @@
 
     <!--<select id="findUserById" resultType="User"> 直接使用User,因application.properties中mybatis.type-aliases-package已指定  -->
     <select id="findUserById" resultType="com.rp.redisdemo.entity.User">
-        select * from xxx_user where id = #{id,jdbcType=INTEGER}
+        select *
+        from xxx_user
+        where id = #{id,jdbcType=BIGINT}
     </select>
 
     <select id="findAll" resultType="com.rp.redisdemo.entity.User">
-        select * from xxx_user
+        select *
+        from xxx_user
     </select>
 
     <update id="updateById" parameterType="User">
         UPDATE xxx_user
         <set>
             <if test="name != null and name != ''">
-                name = #{name,jdbcType=VARCHAR}
+                name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="age!=null and age!=''">
-                age = #{age,jdbcType=INTEGER}
+                age = #{age,jdbcType=INTEGER},
             </if>
             <if test="tel != null and tel != ''">
                 tel = #{tel,jdbcType=VARCHAR}
             </if>
         </set>
+        where id=#{id,jdbcType=BIGINT}
     </update>
 
     <delete id="deleteById" parameterType="integer">
-        delete from xxx_user where id =#{id,jdbcType=INTEGER}
+        delete
+        from xxx_user
+        where id = #{id,jdbcType=BIGINT}
     </delete>
 </mapper>

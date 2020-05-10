@@ -1,6 +1,6 @@
 package com.rp.redisdemo.mapper;
 
-import com.rp.redisdemo.model.User;
+import com.rp.redisdemo.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
