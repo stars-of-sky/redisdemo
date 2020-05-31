@@ -2,6 +2,7 @@ package com.rp.redisdemo;
 
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.system.SystemUtil;
 import com.rp.redisdemo.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.config.RequestConfig;
@@ -51,6 +52,11 @@ public class HttpClientTest {
             .setSocketTimeout(socketTimeout * 1000)
             .setConnectTimeout(connectionTimeout * 1000)
             .build();
+
+    @Test
+    public void osName() {
+        System.out.println(SystemUtil.getOsInfo().getName());
+    }
 
     @Test
     public void postHttp() {
